@@ -1,0 +1,19 @@
+version: '3'
+services:
+  flask-api:
+    # image: ecommerce_app:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - "${ORACLE_WALLET}:/usr/lib/oracle/19.5/client64/lib/network/admin"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+  gatsby-frontend:
+    build:
+      context: ./gatsby-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - flask-api

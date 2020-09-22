@@ -1,0 +1,29 @@
+/* add custom css here */
+html {
+    color: #313639;
+}
+
+.table {
+    /* box-shadow: 1rem 1rem .5rem grey; */
+    /* border: 2px solid #313639; */
+}
+
+.footer {
+  text-align: right;
+}
+
+.test {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+.content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
