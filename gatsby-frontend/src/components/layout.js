@@ -16,25 +16,24 @@ import { Link } from "gatsby"
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { faUserFriends, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
+import { faUserFriends, faTrashAlt,faShoppingCart,faChartLine} from '@fortawesome/free-solid-svg-icons'
 
-library.add(fab, faUserFriends, faTrashAlt)
+library.add(fab, faUserFriends, faTrashAlt,faShoppingCart,faChartLine)
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
+  // const data = useStaticQuery(graphql`
+  //   query SiteTitleQuery {
+  //     site {
+  //       siteMetadata {
+  //         title
+  //       }
+  //     }
+  //   }
+  // `)
 
   return (
     <>
-      <Header siteTitle='Ecommerce Demo'>
-      </Header>
+      <Header siteTitle='Ecommerce Demo' />
       <div
         style={{
           margin: `0 auto`,

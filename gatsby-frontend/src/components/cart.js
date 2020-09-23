@@ -1,38 +1,11 @@
-import React, {useState,useContext} from 'react';
-import { Link } from 'gatsby';
-import { Button,Container,Alert,Table,ButtonGroup,Card,Figure,Row,Col} from "react-bootstrap";
-import { ModalRoutingContext } from 'gatsby-plugin-modal-routing';
-import {GlobalContext} from "../context/GlobalContext";
+import React from 'react';
+import { Button,Container,Table,ButtonGroup,Figure,Row,Col,Modal} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/global.css';
+import '../styles/global.css'
 
-function Cart() {
-  const [alert,setAlert] = useState(false);
-  const {cart,setCart} = useContext(GlobalContext);
 
-  function handleClick() {
-    console.log('The link was clicked.')
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({product_id: 'BGB-US-001', quantity: 1,unit_price:15.25 })
-    };
-    fetch('api/v0/cart/add', requestOptions).then(res => res.json()).then(data => {
-    setCart(data.items);
-    setAlert(true);}
-    );
-  };
-
-  function handleClear() {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'}};
-
-    fetch('api/v0/cart/clear',requestOptions).then(res => res.json()).then(data => {
-    setCart(data.items)}
-    );
-  };
+function ModalCart({ show, handleClose, cart, setCart }) {
 
   function incrementItem(id) {
     console.log(id)
@@ -66,29 +39,46 @@ function Cart() {
     );
   };
 
-  function calcTotal() {
-    const subtotal = cart.map(item => item.unit_price*item.quantity);
-    return subtotal.reduce((a,b) => a+b, 0)
+  function checkoutCart() {
+    const requestOptions = {
+        method: 'POST'
+      };
+
+    fetch('api/v0/cart/checkout',requestOptions).then(res => res.json()).then(data => {
+    setCart(data.cart.items)}
+    );
   };
 
-  return (
-      <div>
-      <h1>
-      Shopping Cart
-      </h1>
-      <Container className='test'>
-      <Card>
-      <Card.Header><b>Items</b></Card.Header>
-      <br />
-      <Container>
-       <Table className="table">
+  function calcTotal() {
+    const subtotal = cart.map(item => item.unit_price*item.quantity);
+    return subtotal.reduce((a,b) => a+b, 0).toFixed(2)
+  };
+
+  function handleClear() {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'}};
+
+    fetch('api/v0/cart/clear',requestOptions).then(res => res.json()).then(data => {
+    setCart(data.items)}
+    );
+  };
+
+return(
+<Modal show={show} onHide={handleClose}  size="lg">
+   <Modal.Header closeButton>
+     <Modal.Title>Items</Modal.Title>
+   </Modal.Header>
+   <Modal.Body>
+   <Container>
+       <Table className="table" borderless striped>
           <thead>
            <tr>
               <th></th>
                <th>Product</th>
                <th>Unit Price</th>
                <th>Quantity</th>
-               <th>Line Total</th>
+               <th>Sub Total</th>
                <th></th>
            </tr>
            </thead>
@@ -122,23 +112,25 @@ function Cart() {
              ))}
            </tbody>
        </Table>
-       </Container>
-       <Container>
-       <Row>
-       <Col></Col>
-       <Col></Col>
-       <Col></Col>
-       <Col>
-       <h2>Total:$ {calcTotal()}</h2>
-       </Col>
+   </Container>
 
-       </Row>
-       </Container>
-        <Card.Footer className="text-right"><Button variant='primary'>Checkout</Button></Card.Footer>
-       </Card>
-       </Container>
-    </div>
-  )
-}
+   <Container>
+    <Row>
+     <Col></Col>
+     <Col></Col>
+     <Col></Col>
+     <Col>
+     <h2>Total:$ {calcTotal()}</h2>
+     </Col>
+    </Row>
+    </Container>
+   </Modal.Body>
+   <Modal.Footer className="d-flex justify-content-between align-items-center">
+   <Button variant="danger" onClick={handleClear}>Clear Cart</Button>{' '}
+   {cart.length >0 ? <Button variant='primary' onClick={checkoutCart}>Checkout</Button> : <Button variant='primary' disabled>Checkout</Button>}
+   </Modal.Footer>
+ </Modal>
+)
+};
 
-export default Cart
+export default ModalCart

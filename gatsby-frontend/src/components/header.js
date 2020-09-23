@@ -1,19 +1,35 @@
 import { Link } from "gatsby"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ModalCart from "../components/cart";
+import {Row,Col,Button} from "react-bootstrap";
+import {GlobalContext} from "../context/GlobalContext";
 import PropTypes from "prop-types"
-import React from "react"
+import React, {useState,useContext} from "react"
 
-const Header = ({ siteTitle }) => (
+function Header ({ siteTitle }) {
+
+  const {cart,setCart} = useContext(GlobalContext);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  return(
   <header
     style={{
-      background: `rebeccapurple`,
+      background: `#C74634`,
       marginBottom: `1.45rem`,
     }}
   >
     <div
       style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "baseline",
+        padding: "1.45rem",
+        margin: "0 auto",
+        maxWidth: "1460px"
       }}
     >
       <h1 style={{ margin: 0 }}>
@@ -28,16 +44,38 @@ const Header = ({ siteTitle }) => (
         </Link>
       </h1>
 
-      <h2 style={{ margin: 0 , textAlign: 'right' }}>
-        <Link
-          to="/modal-cart"
-          state={{modal:true}}>
-          Cart
-        </Link>
+      <h2>
+      <Row>
+
+        <Col>
+          <Button style={{background:'transparent'}} variant="outline-light" onClick={handleShow}>
+            <FontAwesomeIcon icon={"shopping-cart"} size="lg" />
+          </Button>
+        </Col>
+
+        <Col>
+          <Link to="/admin-dashboard"
+          style={{
+            color: `white`,
+            textDecoration: `none`
+          }}>
+            <Button style={{background:'transparent'}} variant="outline-light">
+            <FontAwesomeIcon icon={"chart-line"} size="lg"/>
+            </Button>
+          </Link>
+        </Col>
+
+
+
+      </Row>
       </h2>
     </div>
+    <ModalCart handleClose={handleClose} show={show} cart={cart} setCart={setCart} />
   </header>
+
+
 )
+}
 
 Header.propTypes = {
   siteTitle: PropTypes.string,
