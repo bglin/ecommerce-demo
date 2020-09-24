@@ -1,4 +1,5 @@
 import { Button,Container,Figure,Row,Col} from "react-bootstrap";
+import { Link } from "gatsby"
 import React from "react"
 
 
@@ -9,6 +10,10 @@ function ProductCatalog({ products,addToCart }) {
       {products.map((data,idx) => (
       <Col md={4}>
       <Container key={idx} className="content">
+      <Link to="/product"
+            state={{product:data}}
+            style={{color: `grey`,
+                    textDecoration: `none`}}>
        <Figure>
        <Figure.Image
               width={151}
@@ -25,6 +30,7 @@ function ProductCatalog({ products,addToCart }) {
 
          <Button variant="primary" onClick={() => addToCart(data)}>Add to Cart</Button>
        </Figure>
+       </Link>
       </Container>
       </Col>
       ))}

@@ -1,16 +1,12 @@
 import React, { useEffect,useState,useContext} from 'react';
-import { Link } from "gatsby"
 import Layout from "../components/layout"
-// import Image from "../components/image"
 import SEO from "../components/seo"
-import ProductCatalog from "../components/catalog"
-import {Button,Alert} from "react-bootstrap";
+import {Button,Alert,Figure,Container,Row,Col,Badge} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {GlobalContext} from "../context/GlobalContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function IndexPage() {
-  const {cart,getCart,setCart,products,getProducts} = useContext(GlobalContext);
+function ProductPage({location}) {
+  const {cart,getCart,setCart,getProducts} = useContext(GlobalContext);
   const [alert,setAlert] = useState(false);
 
 
@@ -47,7 +43,7 @@ function IndexPage() {
 
   return(
     <Layout>
-      <SEO title="Home" />
+      <SEO title="Product" />
 
       <Alert show = {alert} variant='success'>Item added to cart
         <div className="d-flex justify-content-end">
@@ -58,12 +54,37 @@ function IndexPage() {
       </Alert>
 
       <h3>Cart Count: {cart.length}</h3>
-      <h2 style={{ textAlign: `center`, minHeight: `10vh`}}>Product Catalog</h2>
-      <ProductCatalog products={products} addToCart={addToCart}/>
-      {/*<div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}> <Image/> </div>*/}
-      <br />
+      <Container style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+      <Row>
+        <Col>
+          <Figure>
+          <Figure.Image
+                 width={300}
+                 height={310}
+                 alt="171x180"
+                 src={location.state.product.image_url}
+                 rounded
+               />
+          </Figure>
+        </Col>
+        <Col>
+          <Row>
+            <h2 style={{ textAlign: `center`, minHeight: `10vh`}}>
+              {location.state.product.name}
+              &nbsp;
+              <Badge pill variant="success">${location.state.product.unit_price}</Badge>
+              </h2>
+            <h4>{location.state.product.description}</h4>
+          </Row>
+
+          <Row>
+          <Button variant="primary" onClick={() => addToCart(location.state.product)}>Add to Cart</Button>
+          </Row>
+        </Col>
+      </Row>
+      </Container>
     </Layout>
 )
 }
 
-export default IndexPage
+export default ProductPage
