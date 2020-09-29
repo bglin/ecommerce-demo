@@ -1,6 +1,8 @@
 from flask import Blueprint,request, jsonify
+from config import Config
 from sqlalchemy import text
 import cx_Oracle
+import oci
 import json
 import random
 from math import pi
@@ -21,6 +23,8 @@ from numpy import cos, linspace
 import pandas as pd
 
 analytics_blueprint = Blueprint('analytics', __name__,url_prefix='/api/v0/analytics/')
+
+oracle_config = oci.config.from_file(Config.ORACLE_CONFIG,"DEFAULT")
 
 data = [{'date':'2020-05-01','product_id':'BGB-US-001','page_views': 150,'total_sale':980},
         {'date':'2020-05-01','product_id':'BGB-US-002','page_views': 200,'total_sale':1000},
@@ -71,6 +75,37 @@ data = [{'date':'2020-05-01','product_id':'BGB-US-001','page_views': 150,'total_
         {'date':'2020-05-07','product_id':'BGB-US-005','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
         {'date':'2020-05-07','product_id':'BGB-US-006','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
         {'date':'2020-05-07','product_id':'BGB-US-007','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)}]
+
+
+@analytics_blueprint.route('/upload/', methods = ['POST'])
+def upload():
+
+    if 'filepond' not in request.files:
+            response =jsonify({'message':'No File Part.Please try Again.'})
+            return(response)
+
+
+    file = request.files['filepond']
+
+    # if user does not select file, browser also
+    # submit a empty part without filename
+    if file.filename == '':
+        response =jsonify({'message':'No Selected File. Please Try Again.'})
+        return(response)
+
+
+    if file:
+        object_storage = oci.object_storage.ObjectStorageClient(oracle_config)
+        print('File Upload Initiated')
+        namespace = object_storage.get_namespace().data
+        bucket_name = Config.BUCKET_NAME
+        object_name = "test_data"
+
+        object_storage.put_object(namespace, bucket_name, object_name, file)
+
+        response = jsonify({'message': 'File Succesfully Uploaded!'})
+        return(response)
+
 @analytics_blueprint.route('/data/sales', methods = ['GET'])
 def total_sales():
     # result is list of tuples

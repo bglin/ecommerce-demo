@@ -36,8 +36,7 @@ function UploadPage() {
         onupdatefiles={setFiles}
         allowMultiple={true}
         maxFiles={3}
-        server="/api"
-        name="files"
+        server="/api/v0/analytics/upload/"
         labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
       />
     </Layout>
