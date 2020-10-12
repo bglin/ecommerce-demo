@@ -24,7 +24,7 @@ import pandas as pd
 
 analytics_blueprint = Blueprint('analytics', __name__,url_prefix='/api/v0/analytics/')
 
-oracle_config = oci.config.from_file(Config.ORACLE_CONFIG,"DEFAULT")
+oracle_config = oci.config.from_file(Config.ORACLE_CONFIG,"BGLIN")
 
 data = [{'date':'2020-05-01','product_id':'BGB-US-001','page_views': 150,'total_sale':980},
         {'date':'2020-05-01','product_id':'BGB-US-002','page_views': 200,'total_sale':1000},
@@ -99,7 +99,7 @@ def upload():
         print('File Upload Initiated')
         namespace = object_storage.get_namespace().data
         bucket_name = Config.BUCKET_NAME
-        object_name = "test_data"
+        object_name = "test_data.json"
 
         object_storage.put_object(namespace, bucket_name, object_name, file)
 

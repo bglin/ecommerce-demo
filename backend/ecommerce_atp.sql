@@ -1,7 +1,9 @@
-drop table orders;
-drop table products;
 drop table order_items;
 drop table inventory;
+drop table orders;
+drop table products;
+drop table DEMO_SALES;
+drop table GA_SINK;
 
 --ALTER TABLE orders MODIFY(ID Generated as Identity (START WITH 1));
 CREATE TABLE orders (order_id NUMBER GENERATED ALWAYS AS IDENTITY, order_date VARCHAR(10),order_total FLOAT, PRIMARY KEY(order_id));
@@ -10,13 +12,13 @@ CREATE TABLE inventory (inventory_id VARCHAR(50) PRIMARY KEY,product_id VARCHAR(
 CREATE TABLE order_items (item_id VARCHAR(500),order_id NUMBER,product_id VARCHAR(50),quantity NUMBER,item_total FLOAT,PRIMARY KEY (item_id, order_id,product_id),FOREIGN KEY (order_id) REFERENCES orders (order_id),FOREIGN KEY (product_id) REFERENCES products (product_id));
 
 
-INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-001','Bathroom Mirror','A small mirror for your bathroom','https://objectstorage.us-ashburn-1.oraclecloud.com/p/KmddNDE6xDn4Ufbp5BaqXK-7E_FrEvI0yj-612AXPiA/n/orasenatdoracledigital04/b/blin-ecommerce/o/bathroom.png',15.25);
-INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-002','Coffee Maker','Coffee machine suitable for your office','https://objectstorage.us-ashburn-1.oraclecloud.com/p/IGrfiu1rVw9hAcT_IU_abIBwznyAKei-Y8SrsVXbKHM/n/orasenatdoracledigital04/b/blin-ecommerce/o/coffee-cup.png',75.50);
-INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-003','Vacuum Cleaner','High-powered, lightweight vacuum for all your cleaning needs','https://objectstorage.us-ashburn-1.oraclecloud.com/p/REhJeJnU7egI9AtqyAbDtk9nKi_wVDwKCSsz3CvUjhI/n/orasenatdoracledigital04/b/blin-ecommerce/o/vacuum-cleaner.png',200);
-INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-004','Rice Cooker','Multi-functional induction heating electric rice cooker','https://objectstorage.us-ashburn-1.oraclecloud.com/p/9GiB5otGmz_Nt_0uaT-471nUBMW8vhhwVBjPyZzS5Kw/n/orasenatdoracledigital04/b/blin-ecommerce/o/rice-cooker.png',118.99);
-INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-005','Mesh Desk Chair','ergonomic high back office chair with a breathable mesh back','https://objectstorage.us-ashburn-1.oraclecloud.com/p/olu5bxrj7mBXWIn315MY33WWMOWtB9Dlip0avYymXc0/n/orasenatdoracledigital04/b/blin-ecommerce/o/studying.png',74.99);
-INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-006','Humidifier','Provides cool mist to maintain humidity levels in your household','https://objectstorage.us-ashburn-1.oraclecloud.com/p/wyRRdMx6LmDI8f6jm0Qf2gdBtnlvPOLDJByuS4rIDg4/n/orasenatdoracledigital04/b/blin-ecommerce/o/humidifier.png',57.99);
-INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-007','Shower Head','Brushed nickel showerheard with six settings','https://objectstorage.us-ashburn-1.oraclecloud.com/p/pJoPb9NaZb-4SD456JT9gEEnuwn7p3ntLtrjbuaV-zA/n/orasenatdoracledigital04/b/blin-ecommerce/o/water.svg',48.99);
+INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-001','Bathroom Mirror','A small mirror for your bathroom','https://objectstorage.us-ashburn-1.oraclecloud.com/p/zTlcydoQsaa1Futltt-zYkoMbQ9F58DmlZR3m4Re28POAtCiVB4Mry3BLll-pSWJ/n/orasenatdoracledigital02/b/blin-ecommerce/o/bathroom.png',15.25);
+INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-002','Coffee Maker','Coffee machine suitable for your office','https://objectstorage.us-ashburn-1.oraclecloud.com/p/uJq70pVR_b2U1nDjitIkE-r_hpFbhuQUO-vg4hKqj6mobX_Cyu58fgG2m5gZAQMS/n/orasenatdoracledigital02/b/blin-ecommerce/o/coffee-cup.png',75.50);
+INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-003','Vacuum Cleaner','High-powered, lightweight vacuum for all your cleaning needs','https://objectstorage.us-ashburn-1.oraclecloud.com/p/9PDyaELA-oIMQAIdjvJ1g9PoptgwOzglj8FPV8b5LIPc5PVFwByRNnj6ASljiemO/n/orasenatdoracledigital02/b/blin-ecommerce/o/vacuum-cleaner.png',200);
+INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-004','Rice Cooker','Multi-functional induction heating electric rice cooker','https://objectstorage.us-ashburn-1.oraclecloud.com/p/0wOweh4JV1UpYjqU35Fa7VBGmxEABeq18WaTvEnwhIhyfjDW-XO4u4xOfM3yu3Ie/n/orasenatdoracledigital02/b/blin-ecommerce/o/rice-cooker.png',118.99);
+INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-005','Mesh Desk Chair','ergonomic high back office chair with a breathable mesh back','https://objectstorage.us-ashburn-1.oraclecloud.com/p/Fx2EQfjhaqGy__4bA93V4D4QA10xabNIe3SjQxl42ZBqMnglPI3iEsG3cUCvMe5H/n/orasenatdoracledigital02/b/blin-ecommerce/o/studying.png',74.99);
+INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-006','Humidifier','Provides cool mist to maintain humidity levels in your household','https://objectstorage.us-ashburn-1.oraclecloud.com/p/4pH2gNIW_pRiQ7yrLjd_jVvqcR5kE7GBrUmNlThFN_CDLf9gZAcp4c2zZVu2-gc3/n/orasenatdoracledigital02/b/blin-ecommerce/o/humidifier.png',57.99);
+INSERT INTO products (product_id,name,description,image_url,unit_price) VALUES('BGB-US-007','Shower Head','Brushed nickel showerheard with six settings','https://objectstorage.us-ashburn-1.oraclecloud.com/p/uq4jqefqc5416ItNrik4v3LUuau_M-hF1XMCRjx3Ly2feKuA0emk1mlYmocGr2Cq/n/orasenatdoracledigital02/b/blin-ecommerce/o/water.svg',48.99);
 
 -- ALTER TABLE products DROP COLUMN prod_json;
 
@@ -28,43 +30,43 @@ ADD CONSTRAINT "ENSURE_JSON" CHECK (prod_json IS JSON);
 
 UPDATE products
 SET
-	prod_json = '{"product_id":"BGB-US-007","name":"Shower Head","description":"Brushed nickel showerheard with six settings","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/pJoPb9NaZb-4SD456JT9gEEnuwn7p3ntLtrjbuaV-zA/n/orasenatdoracledigital04/b/blin-ecommerce/o/water.svg","unit_price":48.99}'
+	prod_json = '{"product_id":"BGB-US-007","name":"Shower Head","description":"Brushed nickel showerheard with six settings","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/uq4jqefqc5416ItNrik4v3LUuau_M-hF1XMCRjx3Ly2feKuA0emk1mlYmocGr2Cq/n/orasenatdoracledigital02/b/blin-ecommerce/o/water.svg","unit_price":48.99}'
 WHERE
 	product_id = 'BGB-US-007';
 
 UPDATE products
 SET
-	prod_json = '{"product_id":"BGB-US-006","name":"Humidifier","description":"Provides cool mist to maintain humidity levels in your household","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/wyRRdMx6LmDI8f6jm0Qf2gdBtnlvPOLDJByuS4rIDg4/n/orasenatdoracledigital04/b/blin-ecommerce/o/humidifier.png","unit_price":57.99}'
+	prod_json = '{"product_id":"BGB-US-006","name":"Humidifier","description":"Provides cool mist to maintain humidity levels in your household","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/4pH2gNIW_pRiQ7yrLjd_jVvqcR5kE7GBrUmNlThFN_CDLf9gZAcp4c2zZVu2-gc3/n/orasenatdoracledigital02/b/blin-ecommerce/o/humidifier.png","unit_price":57.99}'
 WHERE
 	product_id = 'BGB-US-006';
 
 UPDATE products
 SET
-	prod_json = '{"product_id":"BGB-US-005","name":"Mesh Desk Chair","description":"ergonomic high back office chair with a breathable mesh back","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/olu5bxrj7mBXWIn315MY33WWMOWtB9Dlip0avYymXc0/n/orasenatdoracledigital04/b/blin-ecommerce/o/studying.png","unit_price":74.99}'
+	prod_json = '{"product_id":"BGB-US-005","name":"Mesh Desk Chair","description":"ergonomic high back office chair with a breathable mesh back","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/Fx2EQfjhaqGy__4bA93V4D4QA10xabNIe3SjQxl42ZBqMnglPI3iEsG3cUCvMe5H/n/orasenatdoracledigital02/b/blin-ecommerce/o/studying.png","unit_price":74.99}'
 WHERE
 	product_id = 'BGB-US-005';
 
 UPDATE products
 SET
-	prod_json = '{"product_id":"BGB-US-004","name":Rice Cooker","description":"Multi-functional induction heating electric rice cooker","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/9GiB5otGmz_Nt_0uaT-471nUBMW8vhhwVBjPyZzS5Kw/n/orasenatdoracledigital04/b/blin-ecommerce/o/rice-cooker.png","unit_price":118.99}'
+	prod_json = '{"product_id":"BGB-US-004","name":"Rice Cooker","description":"Multi-functional induction heating electric rice cooker","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/0wOweh4JV1UpYjqU35Fa7VBGmxEABeq18WaTvEnwhIhyfjDW-XO4u4xOfM3yu3Ie/n/orasenatdoracledigital02/b/blin-ecommerce/o/rice-cooker.png","unit_price":118.99}'
 WHERE
 	product_id = 'BGB-US-004';
 
 UPDATE products
 SET
-	prod_json = '{"product_id":"BGB-US-003","name":"Vacuum Cleaner","description":"High-powered, lightweight vacuum for all your cleaning needs","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/REhJeJnU7egI9AtqyAbDtk9nKi_wVDwKCSsz3CvUjhI/n/orasenatdoracledigital04/b/blin-ecommerce/o/vacuum-cleaner.png","unit_price":200}'
+	prod_json = '{"product_id":"BGB-US-003","name":"Vacuum Cleaner","description":"High-powered, lightweight vacuum for all your cleaning needs","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/9PDyaELA-oIMQAIdjvJ1g9PoptgwOzglj8FPV8b5LIPc5PVFwByRNnj6ASljiemO/n/orasenatdoracledigital02/b/blin-ecommerce/o/vacuum-cleaner.png","unit_price":200}'
 WHERE
 	product_id = 'BGB-US-003';
 
 UPDATE products
 SET
-	prod_json = '{"product_id":"BGB-US-002","name":"Coffee Maker","description":"Coffee machine suitable for your office","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/IGrfiu1rVw9hAcT_IU_abIBwznyAKei-Y8SrsVXbKHM/n/orasenatdoracledigital04/b/blin-ecommerce/o/coffee-cup.png","unit_price":75.50}'
+	prod_json = '{"product_id":"BGB-US-002","name":"Coffee Maker","description":"Coffee machine suitable for your office","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/uJq70pVR_b2U1nDjitIkE-r_hpFbhuQUO-vg4hKqj6mobX_Cyu58fgG2m5gZAQMS/n/orasenatdoracledigital02/b/blin-ecommerce/o/coffee-cup.png","unit_price":75.50}'
 WHERE
 	product_id = 'BGB-US-002';
 
 UPDATE products
 SET
-	prod_json = '{"product_id":"BGB-US-001","name":"Bathroom Mirror","description":"A small mirror for your bathroom","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/KmddNDE6xDn4Ufbp5BaqXK-7E_FrEvI0yj-612AXPiA/n/orasenatdoracledigital04/b/blin-ecommerce/o/bathroom.png","unit_price":15.25}'
+	prod_json = '{"product_id":"BGB-US-001","name":"Bathroom Mirror","description":"A small mirror for your bathroom","image_url":"https://objectstorage.us-ashburn-1.oraclecloud.com/p/zTlcydoQsaa1Futltt-zYkoMbQ9F58DmlZR3m4Re28POAtCiVB4Mry3BLll-pSWJ/n/orasenatdoracledigital02/b/blin-ecommerce/o/bathroom.png","unit_price":15.25}'
 WHERE
 	product_id = 'BGB-US-001';
 
