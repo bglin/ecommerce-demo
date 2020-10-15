@@ -65,6 +65,20 @@ function Header ({ siteTitle }) {
           </Link>
         </Col>
 
+        <Col>
+          <Link to="/upload"
+          style={{
+            color: `white`,
+            textDecoration: `none`
+          }}>
+            <Button style={{background:'transparent'}} variant="outline-light">
+            <FontAwesomeIcon icon={"cloud-upload-alt"} size="lg"/>
+            </Button>
+          </Link>
+        </Col>
+
+
+
 
 
       </Row>

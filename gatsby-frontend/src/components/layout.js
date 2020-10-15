@@ -16,9 +16,9 @@ import { Link } from "gatsby"
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { faUserFriends, faTrashAlt,faShoppingCart,faChartLine} from '@fortawesome/free-solid-svg-icons'
+import { faUserFriends, faTrashAlt,faShoppingCart,faChartLine,faCloudUploadAlt} from '@fortawesome/free-solid-svg-icons'
 
-library.add(fab, faUserFriends, faTrashAlt,faShoppingCart,faChartLine)
+library.add(fab, faUserFriends, faTrashAlt,faShoppingCart,faChartLine,faCloudUploadAlt)
 
 const Layout = ({ children }) => {
   // const data = useStaticQuery(graphql`
