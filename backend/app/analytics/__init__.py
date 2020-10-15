@@ -26,56 +26,6 @@ analytics_blueprint = Blueprint('analytics', __name__,url_prefix='/api/v0/analyt
 
 oracle_config = oci.config.from_file(Config.ORACLE_CONFIG,"BGLIN")
 
-data = [{'date':'2020-05-01','product_id':'BGB-US-001','page_views': 150,'total_sale':980},
-        {'date':'2020-05-01','product_id':'BGB-US-002','page_views': 200,'total_sale':1000},
-        {'date':'2020-05-01','product_id':'BGB-US-003','page_views': 400,'total_sale':800},
-        {'date':'2020-05-01','product_id':'BGB-US-004','page_views': 25,'total_sale':125},
-        {'date':'2020-05-01','product_id':'BGB-US-005','page_views': 122,'total_sale':300},
-        {'date':'2020-05-01','product_id':'BGB-US-006','page_views': 170,'total_sale':320},
-        {'date':'2020-05-01','product_id':'BGB-US-007','page_views': 80,'total_sale':600},
-        {'date':'2020-05-02','product_id':'BGB-US-001','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-02','product_id':'BGB-US-002','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-02','product_id':'BGB-US-003','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-02','product_id':'BGB-US-004','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-02','product_id':'BGB-US-005','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-02','product_id':'BGB-US-006','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-02','product_id':'BGB-US-007','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-03','product_id':'BGB-US-001','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-03','product_id':'BGB-US-002','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-03','product_id':'BGB-US-003','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-03','product_id':'BGB-US-004','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-03','product_id':'BGB-US-005','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-03','product_id':'BGB-US-006','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-03','product_id':'BGB-US-007','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-04','product_id':'BGB-US-001','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-04','product_id':'BGB-US-002','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-04','product_id':'BGB-US-003','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-04','product_id':'BGB-US-004','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-04','product_id':'BGB-US-005','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-04','product_id':'BGB-US-006','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-04','product_id':'BGB-US-007','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-05','product_id':'BGB-US-001','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-05','product_id':'BGB-US-002','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-05','product_id':'BGB-US-003','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-05','product_id':'BGB-US-004','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-05','product_id':'BGB-US-005','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-05','product_id':'BGB-US-006','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-05','product_id':'BGB-US-007','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-06','product_id':'BGB-US-001','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-06','product_id':'BGB-US-002','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-06','product_id':'BGB-US-003','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-06','product_id':'BGB-US-004','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-06','product_id':'BGB-US-005','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-06','product_id':'BGB-US-006','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-06','product_id':'BGB-US-007','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-07','product_id':'BGB-US-001','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-07','product_id':'BGB-US-002','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-07','product_id':'BGB-US-003','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-07','product_id':'BGB-US-004','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-07','product_id':'BGB-US-005','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-07','product_id':'BGB-US-006','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)},
-        {'date':'2020-05-07','product_id':'BGB-US-007','page_views': random.randint(100,1000),'total_sale':random.randint(100,1000)}]
-
 
 @analytics_blueprint.route('/upload/', methods = ['POST'])
 def upload():
@@ -109,9 +59,9 @@ def upload():
 @analytics_blueprint.route('/data/sales', methods = ['GET'])
 def total_sales():
     # result is list of tuples
-    result = db_session.execute('''SELECT * FROM product_sales''' ).fetchall()
-    formatted_result = [{'date':item[0],'product_id':item[1],'total_sales':str(item[2])} for item in result]
-    return (jsonify(formatted_result))
+    # result = db_session.execute('''SELECT sum(amount) FROM product_sales''' ).fetchall()
+    result = db_session.execute('''SELECT sum(amount) FROM demo_sales''' ).fetchall()
+    return (jsonify(result[0][0]))
 
 
 @analytics_blueprint.route('/data/page-views', methods = ['GET'])
@@ -126,10 +76,10 @@ def total_views():
                 {'ga_date':'2020-05-01','product_id':'BGB-US-007','page_views': 80}]
 
     # result is list of tuples
-    # result = db_session.execute('''SELECT * FROM GA_SINK''' ).fetchall()
-    formatted_result = [{'date':item[0],'product_id':item[1],'page_views':str(item[2])} for item in result]
+    result = db_session.execute('''SELECT sum(page_views) FROM GA_SINK''' ).fetchall()
+    # formatted_result = [{'date':item[0],'product_id':item[1],'page_views':str(item[2])} for item in result]
     # return (jsonify(formatted_result))
-    return (jsonify(sample_data))
+    return (jsonify(result[0][0]))
 
 @analytics_blueprint.route('/custom-reports/<report_id>', methods = ['GET'])
 def custom_reports(report_id):
