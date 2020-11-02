@@ -3,8 +3,10 @@ from config import Config
 from sqlalchemy import text
 import cx_Oracle
 import oci
+from oci.data_integration.data_integration_client import DataIntegrationClient
 import json
 import random
+import time
 from math import pi
 from app.errors import *
 from app.db import db_session
@@ -49,9 +51,20 @@ def upload():
         print('File Upload Initiated')
         namespace = object_storage.get_namespace().data
         bucket_name = Config.BUCKET_NAME
-        object_name = "test_data.json"
+        object_name = "test.json"
 
         object_storage.put_object(namespace, bucket_name, object_name, file)
+
+        ## run integration task
+        dip = DataIntegrationClient(oracle_config)
+        wsid= ""
+        application=""
+        task_id=""
+
+        md = oci.data_integration.models.RegistryMetadata(aggregator_key=task_id)
+        trkey = str(int(time.time()))
+        task = oci.data_integration.models.CreateTaskRunDetails(key=trkey, registry_metadata=md)
+        tsk = dip.create_task_run(wsid,application, create_task_run_details=task)
 
         response = jsonify({'message': 'File Succesfully Uploaded!'})
         return(response)
@@ -86,11 +99,19 @@ def custom_reports(report_id):
 
     if report_id == 'A':
 
-        result = db_session.execute('''select ga_date,sum(page_views),floor(dbms_random.value(2000, 6000)) as sales
-                                       from ga_sink
-                                       group by ga_date''' ).fetchall()
+        # result = db_session.execute('''select ga_date,sum(page_views),floor(dbms_random.value(2000, 6000)) as sales
+        #                                from ga_sink
+        #                                group by ga_date''' ).fetchall()
 
+        result = db_session.execute('''select T1.ga_date,T1.page_views, T2.total_sale
+                                       from (select ga_date,sum(page_views) as page_views from ga_sink group by ga_date) T1
+                                       join (select sale_date,sum(amount) as total_sale from demo_sales group by sale_date) T2
+                                       on T1.ga_date=T2.sale_date''' ).fetchall()
 
+        # result = db_session.execute('''select T1."date",T1.page_views, T2.total_sale
+        #                                from (select "date",sum(page_views) as page_views from test group by "date") T1
+        #                                join (select sale_date,sum(amount) as total_sale from demo_sales group by sale_date) T2
+        #                                on T1."date"=T2.sale_date''' ).fetchall()
         print(result)
 
 
@@ -102,7 +123,7 @@ def custom_reports(report_id):
         cds = ColumnDataSource(test)
 
 
-        p = Figure(plot_width=1000, plot_height=500,title = "Sales Vs Views", y_range=Range1d(start=0,end=6000),x_axis_type='datetime',x_axis_label='Date',y_axis_label='Revenue($)')
+        p = Figure(plot_width=1000, plot_height=500,title = "Sales Vs Views", y_range=Range1d(start=2500,end=33000),x_axis_type='datetime',x_axis_label='Date',y_axis_label='Revenue($)')
         l1=p.line('date','page_views',  source=cds, line_color=d3['Category10'][10][0],line_width=5,legend="Page Views")
         l2=p.line('date','total_sale',  source=cds, line_color=d3['Category10'][10][1],line_width=5,legend="Revenue")
         p.extra_y_ranges = {"foo": Range1d(start=0, end=6000)}
@@ -153,6 +174,11 @@ def custom_reports(report_id):
                                        group by product_id
                                        order by views desc ''' ).fetchall()
 
+        # result = db_session.execute('''select product_id,sum(page_views) as views
+        #                                from test
+        #                                group by product_id
+        #                                order by views desc ''' ).fetchall()
+
         test = pd.DataFrame(result ,columns =['product_id', 'page_views'])
         test.set_index(keys=['product_id'],inplace=True)
 
@@ -169,15 +195,20 @@ def custom_reports(report_id):
 
         return json.dumps(json_item(p))
     if report_id == "C":
-        cdata= [{'product_id':'BGB-US-001','total_sale': random.randint(1000,8000)},
-                    {'product_id':'BGB-US-002','total_sale': random.randint(1000,8000)},
-                    {'product_id':'BGB-US-003','total_sale': random.randint(1000,8000)},
-                    {'product_id':'BGB-US-004','total_sale': random.randint(1000,8000)},
-                    {'product_id':'BGB-US-005','total_sale': random.randint(1000,8000)},
-                    {'product_id':'BGB-US-006','total_sale': random.randint(1000,8000)},
-                    {'product_id':'BGB-US-007','total_sale': random.randint(1000,8000)}]
+        # cdata= [{'product_id':'BGB-US-001','total_sale': random.randint(1000,8000)},
+        #             {'product_id':'BGB-US-002','total_sale': random.randint(1000,8000)},
+        #             {'product_id':'BGB-US-003','total_sale': random.randint(1000,8000)},
+        #             {'product_id':'BGB-US-004','total_sale': random.randint(1000,8000)},
+        #             {'product_id':'BGB-US-005','total_sale': random.randint(1000,8000)},
+        #             {'product_id':'BGB-US-006','total_sale': random.randint(1000,8000)},
+        #             {'product_id':'BGB-US-007','total_sale': random.randint(1000,8000)}]
 
-        c=pd.DataFrame(cdata)
+        cdata= db_session.execute('''select product_id,sum(amount)
+                                     from demo_sales
+                                     group by product_id''').fetchall()
+        c=pd.DataFrame(cdata,columns =['product_id', 'amount'])
+        c.rename(columns={"amount": "total_sale"},inplace=True)
+        print(c)
         c.set_index(keys=['product_id'],inplace=True)
         c['angle'] = c['total_sale']/c['total_sale'].sum() * 2*pi
         c['color'] = d3['Category10'][10][len(c)-1::-1]
